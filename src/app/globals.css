@@ -1,0 +1,124 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/space-grotesk';
+
+/*
+ * OjaBook design system.
+ * Brand (guide 5.1): Charcoal Black, Royal Blue, Tangerine Orange. Royal Blue is the dominant accent.
+ * Orange is used on purpose, never on every button. No green as a brand colour.
+ * Type, spacing, radius and motion follow the landing page design skill (Part B).
+ */
+@theme {
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-charcoal: #21232e;
+  --color-charcoal-elevated: #343746;
+  --color-royal: #105bff;
+  --color-royal-deep: #0a45c9;
+  --color-royal-tint: #e8efff;
+  --color-orange: #fe8500;
+  --color-soft: #f4f5f8;
+  --color-ink: #20222b;
+  --color-muted: #626879;
+  --color-mist: #b8bccb; /* secondary text on charcoal, 8:1 contrast */
+  --color-line: #dfe2ea;
+  --color-line-dark: #464a5e;
+  --color-danger: #c4281c;
+  --color-danger-tint: #fdecea;
+  --color-warning-tint: #fff1de;
+  --color-warning-ink: #8a4300;
+  --color-success-ink: #0b6b45;
+  --color-success-tint: #e3f5ec;
+
+  --ease-oja: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--color-soft);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible focus on every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--color-royal);
+  outline-offset: 2px;
+}
+.on-dark :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* ───────── Named text styles (skill B1). Sizes are Tailwind scale steps only. ─────────
+   Headings step down one size on small phones so they never overflow, then reach the
+   named step from the md breakpoint. */
+@layer components {
+  .heading-1 { @apply font-display text-5xl font-semibold md:text-6xl; text-wrap: balance; }
+  .heading-2 { @apply font-display text-4xl font-semibold md:text-5xl; text-wrap: balance; }
+  .heading-3 { @apply font-display text-3xl font-semibold md:text-4xl; text-wrap: balance; }
+  .heading-4 { @apply font-display text-2xl font-semibold md:text-3xl; text-wrap: balance; }
+  .heading-5 { @apply font-display text-2xl font-semibold; text-wrap: balance; }
+  .heading-6 { @apply font-display text-xl font-semibold; text-wrap: balance; }
+
+  .title-1 { @apply text-xl font-medium; }
+  .title-2 { @apply text-lg font-medium; }
+  .title-3 { @apply text-base font-medium; }
+  .title-4 { @apply text-sm font-medium; }
+  .title-5 { @apply text-xs font-medium; }
+
+  .body-1 { @apply text-base font-semibold; text-wrap: pretty; }
+  .body-2 { @apply text-base font-medium; text-wrap: pretty; }
+  .body-3 { @apply text-base font-normal; text-wrap: pretty; }
+  .body-4 { @apply text-sm font-semibold; text-wrap: pretty; }
+  .body-5 { @apply text-sm font-medium; text-wrap: pretty; }
+  .body-6 { @apply text-sm font-normal; text-wrap: pretty; }
+
+  .button-lg { @apply text-lg font-semibold; }
+  .button-md { @apply text-base font-semibold; }
+  .button-sm { @apply text-sm font-semibold; }
+  .button-xsm { @apply text-xs font-semibold; }
+
+  .caption-1 { @apply text-sm font-medium; }
+  .caption-2 { @apply text-sm font-normal; }
+  .caption-3 { @apply text-xs font-semibold; }
+  .caption-4 { @apply text-xs font-medium; }
+  .caption-5 { @apply text-xs font-normal; }
+
+  /* Money and counts use tabular numerals so columns line up (guide 5.2). */
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Weighted, decelerating motion (skill B7). Color and opacity changes 300ms. */
+  .transition-oja {
+    transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: var(--ease-oja);
+  }
+}
+
+/* Reduced motion: no movement, only plain opacity or instant changes. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.skeleton { animation: skeleton-pulse 1.6s var(--ease-oja) infinite; background: var(--color-line); }
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+}

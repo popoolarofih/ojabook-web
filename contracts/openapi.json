@@ -1,0 +1,6401 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "HealthController_live",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Liveness: the process is up.",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/v1/health/ready": {
+      "get": {
+        "operationId": "HealthController_ready",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Readiness: the database answers. Used by the load balancer and deploy checks.",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/v1/auth/otp/request": {
+      "post": {
+        "operationId": "AuthController_requestOtp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtpRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Send a one time code to a Nigerian phone number",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/otp/verify": {
+      "post": {
+        "operationId": "AuthController_verifyOtp",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtpVerifyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Verify the code and sign in. Sets the refresh cookie.",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "cookie": []
+          }
+        ],
+        "summary": "Rotate the refresh cookie and get a new access token",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/logout-all": {
+      "post": {
+        "operationId": "AuthController_logoutAll",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sign out of every device",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/sessions": {
+      "get": {
+        "operationId": "AuthController_listSessions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SessionInfo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/sessions/{id}": {
+      "delete": {
+        "operationId": "AuthController_revokeSession",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      },
+      "patch": {
+        "operationId": "AuthController_updateMe",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/v1/businesses/categories": {
+      "get": {
+        "operationId": "BusinessesController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessCategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Business types with onboarding suggestions",
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses": {
+      "post": {
+        "operationId": "BusinessesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBusinessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a business. The caller becomes its owner.",
+        "tags": [
+          "businesses"
+        ]
+      },
+      "get": {
+        "operationId": "BusinessesController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BusinessDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/invitations/accept": {
+      "post": {
+        "operationId": "BusinessesController_accept",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptInvitationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Accept a staff invitation. Must be signed in with the invited phone number.",
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses/{id}": {
+      "get": {
+        "operationId": "BusinessesController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      },
+      "patch": {
+        "operationId": "BusinessesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBusinessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses/{id}/members": {
+      "get": {
+        "operationId": "BusinessesController_members",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses/{id}/invitations": {
+      "post": {
+        "operationId": "BusinessesController_invite",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedInvitationDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      },
+      "get": {
+        "operationId": "BusinessesController_invitations",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvitationDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses/{id}/invitations/{invitationId}": {
+      "delete": {
+        "operationId": "BusinessesController_revokeInvitation",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "invitationId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/members/{memberId}": {
+      "patch": {
+        "operationId": "BusinessesController_updateMember",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMemberDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Change a member role, status or permission refinements",
+        "tags": [
+          "businesses"
+        ]
+      },
+      "delete": {
+        "operationId": "BusinessesController_removeMember",
+        "parameters": [
+          {
+            "name": "memberId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reason",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/businesses/{id}/transfer-ownership": {
+      "post": {
+        "operationId": "BusinessesController_transfer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferOwnershipDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/audit-logs": {
+      "get": {
+        "operationId": "BusinessesController_audit",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Recent audit events for the active business",
+        "tags": [
+          "businesses"
+        ]
+      }
+    },
+    "/api/v1/inventory/summary": {
+      "get": {
+        "operationId": "InventoryController_summary",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventorySummary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/api/v1/stock-movements": {
+      "get": {
+        "operationId": "InventoryController_movements",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "productId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPENING",
+                "RECEIPT",
+                "SALE",
+                "SALE_REVERSAL",
+                "ADJUSTMENT_IN",
+                "ADJUSTMENT_OUT",
+                "DAMAGED"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, business timezone.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, business timezone.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockMovementPage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Append only stock movement history",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/api/v1/stock-receipts": {
+      "post": {
+        "operationId": "InventoryController_receive",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Makes retries safe.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStockReceiptDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockReceiptResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Record purchased stock. Blends the weighted average cost.",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/api/v1/stock-adjustments": {
+      "post": {
+        "operationId": "InventoryController_adjust",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Makes retries safe.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStockAdjustmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockAdjustmentResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Add or remove stock with a reason. Audited.",
+        "tags": [
+          "inventory"
+        ]
+      }
+    },
+    "/api/v1/categories": {
+      "get": {
+        "operationId": "ProductsController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      },
+      "post": {
+        "operationId": "ProductsController_createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "operationId": "ProductsController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "Matches name, SKU or barcode.",
+            "schema": {
+              "maxLength": 80,
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "ACTIVE",
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "ARCHIVED",
+                "ALL"
+              ]
+            }
+          },
+          {
+            "name": "lowStock",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductPage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      },
+      "post": {
+        "operationId": "ProductsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/pos-catalogue": {
+      "get": {
+        "operationId": "ProductsController_pos",
+        "parameters": [
+          {
+            "name": "updatedSince",
+            "required": false,
+            "in": "query",
+            "description": "Only products changed after this ISO time.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeArchived",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Compact catalogue for the POS and the offline cache. Never includes cost.",
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/{id}": {
+      "get": {
+        "operationId": "ProductsController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      },
+      "patch": {
+        "operationId": "ProductsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/{id}/archive": {
+      "post": {
+        "operationId": "ProductsController_archive",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/{id}/unarchive": {
+      "post": {
+        "operationId": "ProductsController_unarchive",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/{id}/conversions": {
+      "post": {
+        "operationId": "ProductsController_addConversion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddConversionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/products/{id}/conversions/{conversionId}/archive": {
+      "post": {
+        "operationId": "ProductsController_archiveConversion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "conversionId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/v1/sales": {
+      "post": {
+        "operationId": "SalesController_create",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSaleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Record a sale. Stock, payments, receivable and ledger post atomically.",
+        "tags": [
+          "sales"
+        ]
+      },
+      "get": {
+        "operationId": "SalesController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD in the business timezone.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "cashierId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "receipt",
+            "required": false,
+            "in": "query",
+            "description": "Receipt number search.",
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "COMPLETED",
+                "REVERSED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalePage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Search sales. Cashiers only see their own.",
+        "tags": [
+          "sales"
+        ]
+      }
+    },
+    "/api/v1/sales/{id}": {
+      "get": {
+        "operationId": "SalesController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "sales"
+        ]
+      }
+    },
+    "/api/v1/sales/{id}/reversals": {
+      "post": {
+        "operationId": "SalesController_reverse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReverseSaleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Reverse a sale with a reason. The original records stay untouched.",
+        "tags": [
+          "sales"
+        ]
+      }
+    },
+    "/api/v1/customers": {
+      "get": {
+        "operationId": "CustomersController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "maxLength": 80,
+              "type": "string"
+            }
+          },
+          {
+            "name": "hasBalance",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true"
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "ACTIVE",
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "ARCHIVED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerPage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      },
+      "post": {
+        "operationId": "CustomersController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCustomerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/customers/{id}": {
+      "get": {
+        "operationId": "CustomersController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      },
+      "patch": {
+        "operationId": "CustomersController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCustomerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/customers/{id}/statement": {
+      "get": {
+        "operationId": "CustomersController_statement",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": true,
+            "in": "query",
+            "description": "YYYY-MM-DD",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": true,
+            "in": "query",
+            "description": "YYYY-MM-DD",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatementDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/customers/{id}/repayments": {
+      "post": {
+        "operationId": "CustomersController_repayCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RepaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepaymentResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/receivables": {
+      "get": {
+        "operationId": "CustomersController_listReceivables",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "view",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "open",
+              "type": "string",
+              "enum": [
+                "open",
+                "overdue",
+                "settled"
+              ]
+            }
+          },
+          {
+            "name": "customerId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceivablePage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/receivables/{id}/repayments": {
+      "post": {
+        "operationId": "CustomersController_repay",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RepaymentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepaymentResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "customers"
+        ]
+      }
+    },
+    "/api/v1/expense-categories": {
+      "get": {
+        "operationId": "ExpensesController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExpenseCategoryDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      },
+      "post": {
+        "operationId": "ExpensesController_createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExpenseCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseCategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/api/v1/expenses": {
+      "get": {
+        "operationId": "ExpensesController_list",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "type": "number"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "POSTED",
+                "REVERSED"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "maxLength": 60,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensePage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      },
+      "post": {
+        "operationId": "ExpensesController_create",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExpenseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/api/v1/expenses/{id}": {
+      "patch": {
+        "operationId": "ExpensesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExpenseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/api/v1/expenses/{id}/reversals": {
+      "post": {
+        "operationId": "ExpensesController_reverse",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReverseExpenseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "expenses"
+        ]
+      }
+    },
+    "/api/v1/reports/overview": {
+      "get": {
+        "operationId": "ReportsController_overview",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverviewReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Dashboard metrics. Profit and cost figures appear only with reports.financial.",
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/sales": {
+      "get": {
+        "operationId": "ReportsController_sales",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/collections": {
+      "get": {
+        "operationId": "ReportsController_collections",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionsReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/receivables": {
+      "get": {
+        "operationId": "ReportsController_receivables",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceivablesReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/expenses": {
+      "get": {
+        "operationId": "ReportsController_expenses",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpensesReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/profit": {
+      "get": {
+        "operationId": "ReportsController_profit",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfitReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/inventory": {
+      "get": {
+        "operationId": "ReportsController_inventory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/products": {
+      "get": {
+        "operationId": "ReportsController_products",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductPerformanceReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/reports/staff": {
+      "get": {
+        "operationId": "ReportsController_staff",
+        "parameters": [
+          {
+            "name": "preset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "today",
+              "type": "string",
+              "enum": [
+                "today",
+                "yesterday",
+                "last7",
+                "last30",
+                "custom"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "description": "YYYY-MM-DD, needed for custom.",
+            "schema": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaffReport"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "reports"
+        ]
+      }
+    },
+    "/api/v1/sync/operations": {
+      "post": {
+        "operationId": "SyncController_submit",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SyncBatchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncBatchResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Send operations recorded offline. Safe to retry.",
+        "tags": [
+          "sync"
+        ]
+      }
+    },
+    "/api/v1/sync/status": {
+      "get": {
+        "operationId": "SyncController_status",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncStatusDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "tags": [
+          "sync"
+        ]
+      }
+    },
+    "/api/v1/sync/operations/{id}/resolve": {
+      "post": {
+        "operationId": "SyncController_resolve",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveOperationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SyncOperationResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "business": []
+          }
+        ],
+        "summary": "Decide what happens to a conflicting or rejected offline operation",
+        "tags": [
+          "sync"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "OjaBook API",
+    "description": "Versioned contract for the OjaBook web app. Money is integer kobo. Quantities are decimal strings. Financial mutations require an Idempotency-Key header. Tenant routes require X-Business-Id.",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      },
+      "business": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Business-Id",
+        "description": "The active business. Membership is verified on every request."
+      }
+    },
+    "schemas": {
+      "OtpRequestDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "maxLength": 25,
+            "example": "0801 234 5678",
+            "description": "Nigerian mobile number in any common format."
+          }
+        },
+        "required": [
+          "phone"
+        ]
+      },
+      "OtpRequestResponse": {
+        "type": "object",
+        "properties": {
+          "expiresInSeconds": {
+            "type": "number"
+          },
+          "resendAfterSeconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "expiresInSeconds",
+          "resendAfterSeconds"
+        ]
+      },
+      "OtpVerifyDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "maxLength": 25,
+            "example": "0801 234 5678"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$",
+            "example": "123456"
+          },
+          "deviceName": {
+            "type": "string",
+            "maxLength": 80,
+            "example": "Chrome on Android"
+          }
+        },
+        "required": [
+          "phone",
+          "code"
+        ]
+      },
+      "UserSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "phone",
+          "name"
+        ]
+      },
+      "MembershipSummary": {
+        "type": "object",
+        "properties": {
+          "businessId": {
+            "type": "string"
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "currency": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "businessId",
+          "businessName",
+          "role",
+          "permissions",
+          "currency",
+          "timezone"
+        ]
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "expiresInSeconds": {
+            "type": "number"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserSummary"
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MembershipSummary"
+            }
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresInSeconds",
+          "user",
+          "memberships"
+        ]
+      },
+      "RefreshResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "expiresInSeconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "accessToken",
+          "expiresInSeconds"
+        ]
+      },
+      "SessionInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "deviceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userAgent": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastUsedAt": {
+            "type": "string"
+          },
+          "current": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "deviceName",
+          "userAgent",
+          "lastUsedAt",
+          "current"
+        ]
+      },
+      "MeResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserSummary"
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MembershipSummary"
+            }
+          }
+        },
+        "required": [
+          "user",
+          "memberships"
+        ]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80,
+            "example": "Amaka Okafor"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "BusinessCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "suggestedUnits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "suggestedUnits"
+        ]
+      },
+      "CreateBusinessDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80,
+            "example": "Amaka Provisions"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "general_trader",
+              "retail_shop",
+              "wholesale",
+              "provision_store",
+              "foodstuff",
+              "beverages",
+              "pharmacy",
+              "fashion",
+              "electronics",
+              "building",
+              "services",
+              "other"
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120,
+            "format": "email"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "timezone": {
+            "type": "string",
+            "maxLength": 60,
+            "default": "Africa/Lagos",
+            "description": "IANA timezone. Stored per business."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "NGN"
+            ],
+            "default": "NGN"
+          }
+        },
+        "required": [
+          "name",
+          "category"
+        ]
+      },
+      "BusinessDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "category",
+          "phone",
+          "email",
+          "address",
+          "city",
+          "state",
+          "currency",
+          "timezone"
+        ]
+      },
+      "AcceptInvitationDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "token"
+        ]
+      },
+      "UpdateBusinessDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "general_trader",
+              "retail_shop",
+              "wholesale",
+              "provision_store",
+              "foodstuff",
+              "beverages",
+              "pharmacy",
+              "fashion",
+              "electronics",
+              "building",
+              "services",
+              "other"
+            ]
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 120,
+            "format": "email"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "timezone": {
+            "type": "string",
+            "maxLength": 60
+          }
+        }
+      },
+      "MemberDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "OWNER",
+              "MANAGER",
+              "CASHIER",
+              "INVENTORY_MANAGER"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED",
+              "REMOVED"
+            ],
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extraPermissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revokedPermissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "name",
+          "phone",
+          "role",
+          "status",
+          "permissions",
+          "extraPermissions",
+          "revokedPermissions"
+        ]
+      },
+      "InviteMemberDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "maxLength": 25,
+            "example": "0803 456 7890"
+          },
+          "role": {
+            "enum": [
+              "MANAGER",
+              "CASHIER",
+              "INVENTORY_MANAGER"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "phone",
+          "role"
+        ]
+      },
+      "CreatedInvitationDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Shown once. Share it with the invited person. It is stored only as a hash."
+          },
+          "id": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "MANAGER",
+              "CASHIER",
+              "INVENTORY_MANAGER"
+            ]
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "id",
+          "phone",
+          "role",
+          "expiresAt",
+          "status"
+        ]
+      },
+      "InvitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "MANAGER",
+              "CASHIER",
+              "INVENTORY_MANAGER"
+            ]
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "phone",
+          "role",
+          "expiresAt",
+          "status"
+        ]
+      },
+      "UpdateMemberDto": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "MANAGER",
+              "CASHIER",
+              "INVENTORY_MANAGER"
+            ],
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "SUSPENDED"
+            ],
+            "type": "string"
+          },
+          "extraPermissions": {
+            "maxItems": 40,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revokedPermissions": {
+            "maxItems": 40,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 300,
+            "description": "Required when changing role, status or permissions."
+          }
+        }
+      },
+      "TransferOwnershipDto": {
+        "type": "object",
+        "properties": {
+          "memberId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "memberId",
+          "reason"
+        ]
+      },
+      "InventorySummary": {
+        "type": "object",
+        "properties": {
+          "stockValueKobo": {
+            "type": "number",
+            "description": "Needs cost.read."
+          },
+          "activeProducts": {
+            "type": "number"
+          },
+          "lowStockCount": {
+            "type": "number"
+          },
+          "outOfStockCount": {
+            "type": "number"
+          },
+          "lowStock": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "string"
+                },
+                "reorderThreshold": {
+                  "type": "string"
+                },
+                "baseUnit": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productId",
+                "name",
+                "quantity",
+                "reorderThreshold",
+                "baseUnit"
+              ]
+            }
+          }
+        },
+        "required": [
+          "activeProducts",
+          "lowStockCount",
+          "outOfStockCount",
+          "lowStock"
+        ]
+      },
+      "StockMovementDto": {
+        "type": "object",
+        "properties": {
+          "unitCostKobo": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "DAMAGED",
+              "OPENING",
+              "RECEIPT",
+              "SALE",
+              "SALE_REVERSAL",
+              "ADJUSTMENT_IN",
+              "ADJUSTMENT_OUT"
+            ]
+          },
+          "quantityDelta": {
+            "type": "string"
+          },
+          "balanceAfter": {
+            "type": "string"
+          },
+          "reasonCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sourceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "occurredAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "productId",
+          "productName",
+          "type",
+          "quantityDelta",
+          "balanceAfter",
+          "reasonCode",
+          "note",
+          "sourceType",
+          "sourceId",
+          "occurredAt"
+        ]
+      },
+      "StockMovementPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StockMovementDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ]
+      },
+      "ReceiptLineDto": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "string",
+            "example": "5",
+            "description": "Quantity in the chosen unit."
+          },
+          "unitId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A product unit conversion. Omit for the base unit."
+          },
+          "unitCostKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Cost of ONE of the chosen unit, in kobo."
+          }
+        },
+        "required": [
+          "productId",
+          "quantity",
+          "unitCostKobo"
+        ]
+      },
+      "CreateStockReceiptDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated receipt id."
+          },
+          "paymentMethod": {
+            "enum": [
+              "CASH",
+              "TRANSFER"
+            ],
+            "type": "string",
+            "description": "How the supplier was paid."
+          },
+          "supplier": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "receivedAt": {
+            "type": "string"
+          },
+          "lines": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReceiptLineDto"
+            }
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "lines"
+        ]
+      },
+      "StockReceiptResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "totalCostKobo": {
+            "type": "number"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "baseQuantity": {
+                  "type": "string"
+                },
+                "unitCostKobo": {
+                  "type": "string"
+                },
+                "lineTotalKobo": {
+                  "type": "number"
+                },
+                "quantityAfter": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productId",
+                "baseQuantity",
+                "unitCostKobo",
+                "lineTotalKobo",
+                "quantityAfter"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "totalCostKobo",
+          "lines"
+        ]
+      },
+      "CreateStockAdjustmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "direction": {
+            "enum": [
+              "IN",
+              "OUT"
+            ],
+            "type": "string"
+          },
+          "reason": {
+            "enum": [
+              "COUNT_CORRECTION",
+              "DAMAGED",
+              "EXPIRED",
+              "LOST_OR_STOLEN",
+              "FOUND",
+              "OTHER"
+            ],
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string",
+            "example": "3",
+            "description": "Quantity in the product base unit."
+          },
+          "note": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Required. Explains the adjustment in the audit trail."
+          }
+        },
+        "required": [
+          "productId",
+          "direction",
+          "reason",
+          "quantity",
+          "note"
+        ]
+      },
+      "StockAdjustmentResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "movementType": {
+            "type": "string",
+            "enum": [
+              "DAMAGED",
+              "OPENING",
+              "RECEIPT",
+              "SALE",
+              "SALE_REVERSAL",
+              "ADJUSTMENT_IN",
+              "ADJUSTMENT_OUT"
+            ]
+          },
+          "quantityAfter": {
+            "type": "string"
+          },
+          "valueKobo": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "productId",
+          "movementType",
+          "quantityAfter",
+          "valueKobo"
+        ]
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "productCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "productCount"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60,
+            "example": "Drinks"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ConversionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "factor": {
+            "type": "string"
+          },
+          "sellingPriceKobo": {
+            "type": "number",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "factor",
+          "sellingPriceKobo"
+        ]
+      },
+      "ProductDto": {
+        "type": "object",
+        "properties": {
+          "avgCostKobo": {
+            "type": "string",
+            "description": "Weighted average cost per base unit (kobo). Needs cost.read."
+          },
+          "stockValueKobo": {
+            "type": "number",
+            "description": "Quantity x average cost, in kobo. Needs cost.read."
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "barcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryId": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "baseUnit": {
+            "type": "string"
+          },
+          "sellingPriceKobo": {
+            "type": "number"
+          },
+          "reorderThreshold": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string"
+          },
+          "isLowStock": {
+            "type": "boolean"
+          },
+          "conversions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversionDto"
+            }
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "sku",
+          "barcode",
+          "categoryId",
+          "categoryName",
+          "baseUnit",
+          "sellingPriceKobo",
+          "reorderThreshold",
+          "status",
+          "quantity",
+          "isLowStock",
+          "conversions",
+          "updatedAt"
+        ]
+      },
+      "ProductPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ]
+      },
+      "ConversionInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "example": "carton"
+          },
+          "factor": {
+            "type": "string",
+            "example": "12",
+            "description": "How many base units one of this unit contains."
+          },
+          "sellingPriceKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Optional selling price (kobo) for one of this unit."
+          }
+        },
+        "required": [
+          "name",
+          "factor"
+        ]
+      },
+      "OpeningStockInput": {
+        "type": "object",
+        "properties": {
+          "quantity": {
+            "type": "string",
+            "example": "24"
+          },
+          "unitCostKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Cost per base unit in kobo."
+          }
+        },
+        "required": [
+          "quantity",
+          "unitCostKobo"
+        ]
+      },
+      "CreateProductDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated UUID, so a retry cannot create a duplicate."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "example": "Peak Milk Tin 170g"
+          },
+          "sku": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "barcode": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "baseUnit": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "example": "piece",
+            "description": "The unit stock is counted in."
+          },
+          "sellingPriceKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Selling price per base unit, in kobo."
+          },
+          "reorderThreshold": {
+            "type": "string",
+            "example": "10"
+          },
+          "conversions": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConversionInput"
+            }
+          },
+          "openingStock": {
+            "$ref": "#/components/schemas/OpeningStockInput"
+          }
+        },
+        "required": [
+          "name",
+          "baseUnit",
+          "sellingPriceKobo"
+        ]
+      },
+      "UpdateProductDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "sku": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "barcode": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sellingPriceKobo": {
+            "type": "number",
+            "minimum": 0
+          },
+          "reorderThreshold": {
+            "type": "string"
+          }
+        }
+      },
+      "AddConversionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "example": "carton"
+          },
+          "factor": {
+            "type": "string",
+            "example": "12",
+            "description": "How many base units one of this unit contains."
+          },
+          "sellingPriceKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Optional selling price (kobo) for one of this unit."
+          }
+        },
+        "required": [
+          "name",
+          "factor"
+        ]
+      },
+      "SaleItemInput": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantity": {
+            "type": "string",
+            "example": "2.5",
+            "description": "Quantity in the chosen unit, a decimal string."
+          },
+          "unitId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unit conversion id. Omit for the base unit."
+          },
+          "unitPriceKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Price per unit in kobo. Differing from the list price needs sales.price_override."
+          },
+          "discountKobo": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Discount on this line in kobo. Needs sales.discount."
+          },
+          "overrideReason": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Optional reason for a discount or override."
+          }
+        },
+        "required": [
+          "productId",
+          "quantity"
+        ]
+      },
+      "SalePaymentInput": {
+        "type": "object",
+        "properties": {
+          "method": {
+            "enum": [
+              "CASH",
+              "TRANSFER",
+              "CREDIT"
+            ],
+            "type": "string"
+          },
+          "amountKobo": {
+            "type": "number",
+            "minimum": 1,
+            "description": "Kobo. All payments must add up to the sale total."
+          }
+        },
+        "required": [
+          "method",
+          "amountKobo"
+        ]
+      },
+      "CreateSaleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated UUID. Offline sales keep the same id when they sync."
+          },
+          "occurredAt": {
+            "type": "string",
+            "description": "When the sale happened. Defaults to now. Offline sales send their original time."
+          },
+          "customerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Required for credit. Walk in sales leave it out."
+          },
+          "items": {
+            "minItems": 1,
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleItemInput"
+            }
+          },
+          "payments": {
+            "minItems": 1,
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalePaymentInput"
+            }
+          },
+          "dueDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "example": "2026-12-01",
+            "description": "Due date for the credit part."
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "items",
+          "payments"
+        ]
+      },
+      "SaleItemDto": {
+        "type": "object",
+        "properties": {
+          "unitCostKobo": {
+            "type": "string",
+            "description": "Needs cost.read."
+          },
+          "cogsKobo": {
+            "type": "number",
+            "description": "Needs cost.read."
+          },
+          "id": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string",
+            "nullable": true
+          },
+          "productName": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitName": {
+            "type": "string"
+          },
+          "unitFactor": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string"
+          },
+          "baseQuantity": {
+            "type": "string"
+          },
+          "listPriceKobo": {
+            "type": "number"
+          },
+          "unitPriceKobo": {
+            "type": "number"
+          },
+          "discountKobo": {
+            "type": "number"
+          },
+          "lineTotalKobo": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "productId",
+          "productName",
+          "sku",
+          "unitName",
+          "unitFactor",
+          "quantity",
+          "baseQuantity",
+          "listPriceKobo",
+          "unitPriceKobo",
+          "discountKobo",
+          "lineTotalKobo"
+        ]
+      },
+      "SalePaymentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "CASH",
+              "TRANSFER"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "amountKobo": {
+            "type": "number"
+          },
+          "verified": {
+            "type": "boolean",
+            "description": "True only when the money is verified as settled. Transfers entered by hand are not."
+          }
+        },
+        "required": [
+          "id",
+          "method",
+          "status",
+          "amountKobo",
+          "verified"
+        ]
+      },
+      "SaleDto": {
+        "type": "object",
+        "properties": {
+          "cogsKobo": {
+            "type": "number",
+            "description": "Needs cost.read."
+          },
+          "grossProfitKobo": {
+            "type": "number",
+            "description": "Needs cost.read."
+          },
+          "id": {
+            "type": "string"
+          },
+          "receiptNumber": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "REVERSED",
+              "COMPLETED"
+            ],
+            "type": "string"
+          },
+          "customer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ]
+          },
+          "cashier": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleItemDto"
+            }
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalePaymentDto"
+            }
+          },
+          "subtotalKobo": {
+            "type": "number"
+          },
+          "discountKobo": {
+            "type": "number"
+          },
+          "totalKobo": {
+            "type": "number"
+          },
+          "creditKobo": {
+            "type": "number"
+          },
+          "outstandingKobo": {
+            "type": "number"
+          },
+          "dueDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "nullable": true
+          },
+          "occurredAt": {
+            "type": "string"
+          },
+          "reversal": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "reason",
+              "at"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "receiptNumber",
+          "status",
+          "customer",
+          "cashier",
+          "items",
+          "payments",
+          "subtotalKobo",
+          "discountKobo",
+          "totalKobo",
+          "creditKobo",
+          "outstandingKobo",
+          "dueDate",
+          "note",
+          "occurredAt",
+          "reversal"
+        ]
+      },
+      "SalePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ]
+      },
+      "ReverseSaleDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "CustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "type": "string"
+          },
+          "outstandingKobo": {
+            "type": "number",
+            "description": "Unpaid credit sales as of now."
+          },
+          "overdueKobo": {
+            "type": "number",
+            "description": "The part of outstanding that is past its due date."
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "phone",
+          "notes",
+          "status",
+          "outstandingKobo",
+          "overdueKobo",
+          "createdAt"
+        ]
+      },
+      "CustomerPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "totalOutstandingKobo": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total",
+          "totalOutstandingKobo"
+        ]
+      },
+      "CreateCustomerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated UUID so offline creation is retry safe."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80,
+            "example": "Mama Tunde"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 25,
+            "example": "0805 111 2222"
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateCustomerDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "ARCHIVED"
+            ],
+            "type": "string"
+          }
+        }
+      },
+      "StatementRow": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "SALE",
+              "SALE_REVERSAL",
+              "REPAYMENT",
+              "PENDING_TRANSFER"
+            ]
+          },
+          "reference": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "chargedKobo": {
+            "type": "number"
+          },
+          "paidKobo": {
+            "type": "number"
+          },
+          "balanceKobo": {
+            "type": "number",
+            "description": "Running balance after this row. Pending transfers do not change it."
+          }
+        },
+        "required": [
+          "date",
+          "type",
+          "reference",
+          "description",
+          "chargedKobo",
+          "paidKobo",
+          "balanceKobo"
+        ]
+      },
+      "StatementDto": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "phone"
+            ]
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "fromDate": {
+            "type": "string"
+          },
+          "toDate": {
+            "type": "string"
+          },
+          "openingBalanceKobo": {
+            "type": "number"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatementRow"
+            }
+          },
+          "closingBalanceKobo": {
+            "type": "number"
+          },
+          "generatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "customer",
+          "businessName",
+          "fromDate",
+          "toDate",
+          "openingBalanceKobo",
+          "rows",
+          "closingBalanceKobo",
+          "generatedAt"
+        ]
+      },
+      "RepaymentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated payment id."
+          },
+          "amountKobo": {
+            "type": "number",
+            "minimum": 1,
+            "description": "Kobo. Cannot be more than the amount owed."
+          },
+          "method": {
+            "enum": [
+              "CASH",
+              "TRANSFER"
+            ],
+            "type": "string",
+            "description": "A transfer stays unverified and does not reduce the balance until it is verified."
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "occurredAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "amountKobo",
+          "method"
+        ]
+      },
+      "RepaymentResult": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          },
+          "amountKobo": {
+            "type": "number"
+          },
+          "allocations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "receivableId": {
+                  "type": "string"
+                },
+                "receiptNumber": {
+                  "type": "string"
+                },
+                "amountKobo": {
+                  "type": "number"
+                },
+                "remainingKobo": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "receivableId",
+                "receiptNumber",
+                "amountKobo",
+                "remainingKobo"
+              ]
+            }
+          },
+          "customerOutstandingKobo": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "paymentId",
+          "status",
+          "verified",
+          "amountKobo",
+          "allocations",
+          "customerOutstandingKobo"
+        ]
+      },
+      "ReceivableDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "saleId": {
+            "type": "string"
+          },
+          "receiptNumber": {
+            "type": "string"
+          },
+          "originalKobo": {
+            "type": "number"
+          },
+          "outstandingKobo": {
+            "type": "number"
+          },
+          "dueDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "PARTIAL",
+              "SETTLED",
+              "VOIDED"
+            ]
+          },
+          "isOverdue": {
+            "type": "boolean"
+          },
+          "daysOverdue": {
+            "type": "number"
+          },
+          "saleDate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "customerId",
+          "customerName",
+          "saleId",
+          "receiptNumber",
+          "originalKobo",
+          "outstandingKobo",
+          "dueDate",
+          "status",
+          "isOverdue",
+          "daysOverdue",
+          "saleDate"
+        ]
+      },
+      "ReceivablePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReceivableDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total"
+        ]
+      },
+      "ExpenseCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "CreateExpenseCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60,
+            "example": "Generator fuel"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ExpenseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string"
+          },
+          "categoryName": {
+            "type": "string"
+          },
+          "amountKobo": {
+            "type": "number"
+          },
+          "method": {
+            "enum": [
+              "CASH",
+              "TRANSFER"
+            ],
+            "type": "string"
+          },
+          "expenseDate": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "REVERSED",
+              "POSTED"
+            ],
+            "type": "string"
+          },
+          "reversalReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdById": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "categoryId",
+          "categoryName",
+          "amountKobo",
+          "method",
+          "expenseDate",
+          "description",
+          "status",
+          "reversalReason",
+          "createdById",
+          "createdAt"
+        ]
+      },
+      "ExpensePage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExpenseDto"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "pageSize": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "totalPostedKobo": {
+            "type": "number",
+            "description": "Sum of POSTED expenses matching the filter."
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "pageSize",
+          "total",
+          "totalPostedKobo"
+        ]
+      },
+      "CreateExpenseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated UUID. Retries and offline sync reuse it."
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountKobo": {
+            "type": "number",
+            "minimum": 1,
+            "description": "Kobo."
+          },
+          "method": {
+            "enum": [
+              "CASH",
+              "TRANSFER"
+            ],
+            "type": "string",
+            "description": "How it was paid."
+          },
+          "expenseDate": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "example": "2026-11-14",
+            "description": "Business local date. Defaults to today."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200,
+            "example": "Diesel for the generator"
+          }
+        },
+        "required": [
+          "categoryId",
+          "amountKobo",
+          "method",
+          "description"
+        ]
+      },
+      "UpdateExpenseDto": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200,
+            "description": "Only the description can be edited. Money changes need a reversal and a new expense."
+          }
+        },
+        "required": [
+          "description"
+        ]
+      },
+      "ReverseExpenseDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "RangeInfo": {
+        "type": "object",
+        "properties": {
+          "preset": {
+            "type": "string"
+          },
+          "fromDate": {
+            "type": "string"
+          },
+          "toDate": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "preset",
+          "fromDate",
+          "toDate",
+          "timezone",
+          "currency"
+        ]
+      },
+      "SeriesPoint": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "valueKobo": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "date",
+          "valueKobo"
+        ]
+      },
+      "OverviewReport": {
+        "type": "object",
+        "properties": {
+          "expensesKobo": {
+            "type": "number",
+            "description": "Needs reports.financial."
+          },
+          "cogsKobo": {
+            "type": "number",
+            "description": "Needs reports.financial."
+          },
+          "grossProfitKobo": {
+            "type": "number",
+            "description": "Needs reports.financial."
+          },
+          "netOperatingProfitKobo": {
+            "type": "number",
+            "description": "Operational figure, not audited statutory profit. Needs reports.financial."
+          },
+          "inventoryValueKobo": {
+            "type": "number",
+            "description": "On hand quantity x average cost, now. Needs cost.read."
+          },
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "revenueKobo": {
+            "type": "number",
+            "description": "Net recognised sales in the period, credit sales included, reversals deducted."
+          },
+          "salesCount": {
+            "type": "number"
+          },
+          "collectedKobo": {
+            "type": "number",
+            "description": "Settled cash in the period. Not the same as revenue."
+          },
+          "pendingTransfersKobo": {
+            "type": "number",
+            "description": "Transfers entered but not verified. Not counted as collected."
+          },
+          "outstandingDebtKobo": {
+            "type": "number",
+            "description": "Unpaid customer credit at the end of the period."
+          },
+          "lowStockCount": {
+            "type": "number"
+          },
+          "revenueSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeriesPoint"
+            }
+          },
+          "topProducts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "salesKobo": {
+                  "type": "number"
+                },
+                "units": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "productId",
+                "name",
+                "salesKobo",
+                "units"
+              ]
+            }
+          },
+          "recent": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "EXPENSE",
+                    "SALE",
+                    "REPAYMENT"
+                  ],
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "amountKobo": {
+                  "type": "number"
+                },
+                "at": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "id",
+                "label",
+                "amountKobo",
+                "at"
+              ]
+            }
+          },
+          "definitions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "range",
+          "revenueKobo",
+          "salesCount",
+          "collectedKobo",
+          "pendingTransfersKobo",
+          "outstandingDebtKobo",
+          "lowStockCount",
+          "revenueSeries",
+          "topProducts",
+          "recent",
+          "definitions"
+        ]
+      },
+      "SalesReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "grossSalesKobo": {
+            "type": "number"
+          },
+          "discountsKobo": {
+            "type": "number"
+          },
+          "reversalsKobo": {
+            "type": "number"
+          },
+          "netSalesKobo": {
+            "type": "number"
+          },
+          "transactionCount": {
+            "type": "number"
+          },
+          "reversedCount": {
+            "type": "number"
+          },
+          "paymentMix": {
+            "type": "object",
+            "properties": {
+              "cashKobo": {
+                "type": "number"
+              },
+              "transferKobo": {
+                "type": "number"
+              },
+              "creditKobo": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "cashKobo",
+              "transferKobo",
+              "creditKobo"
+            ]
+          },
+          "series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SeriesPoint"
+            }
+          }
+        },
+        "required": [
+          "range",
+          "grossSalesKobo",
+          "discountsKobo",
+          "reversalsKobo",
+          "netSalesKobo",
+          "transactionCount",
+          "reversedCount",
+          "paymentMix",
+          "series"
+        ]
+      },
+      "CollectionsReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "cashFromSalesKobo": {
+            "type": "number"
+          },
+          "cashFromRepaymentsKobo": {
+            "type": "number"
+          },
+          "refundsKobo": {
+            "type": "number"
+          },
+          "netCollectedKobo": {
+            "type": "number"
+          },
+          "pendingTransfersKobo": {
+            "type": "number"
+          },
+          "pendingRepayments": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number"
+              },
+              "amountKobo": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "count",
+              "amountKobo"
+            ]
+          }
+        },
+        "required": [
+          "range",
+          "cashFromSalesKobo",
+          "cashFromRepaymentsKobo",
+          "refundsKobo",
+          "netCollectedKobo",
+          "pendingTransfersKobo",
+          "pendingRepayments"
+        ]
+      },
+      "ReceivablesReport": {
+        "type": "object",
+        "properties": {
+          "asOf": {
+            "type": "string"
+          },
+          "totalOutstandingKobo": {
+            "type": "number"
+          },
+          "overdueKobo": {
+            "type": "number"
+          },
+          "buckets": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "number"
+              },
+              "noDueDate": {
+                "type": "number"
+              },
+              "days1to30": {
+                "type": "number"
+              },
+              "days31to60": {
+                "type": "number"
+              },
+              "days61to90": {
+                "type": "number"
+              },
+              "days90plus": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "current",
+              "noDueDate",
+              "days1to30",
+              "days31to60",
+              "days61to90",
+              "days90plus"
+            ]
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "customerId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "outstandingKobo": {
+                  "type": "number"
+                },
+                "oldestDueDate": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "openInvoices": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "customerId",
+                "name",
+                "phone",
+                "outstandingKobo",
+                "oldestDueDate",
+                "openInvoices"
+              ]
+            }
+          },
+          "repaymentsInPeriodKobo": {
+            "type": "number"
+          },
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          }
+        },
+        "required": [
+          "asOf",
+          "totalOutstandingKobo",
+          "overdueKobo",
+          "buckets",
+          "customers",
+          "repaymentsInPeriodKobo",
+          "range"
+        ]
+      },
+      "ExpensesReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "totalKobo": {
+            "type": "number"
+          },
+          "count": {
+            "type": "number"
+          },
+          "byCategory": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "categoryId": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "name": {
+                  "type": "string"
+                },
+                "totalKobo": {
+                  "type": "number"
+                },
+                "count": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "categoryId",
+                "name",
+                "totalKobo",
+                "count"
+              ]
+            }
+          }
+        },
+        "required": [
+          "range",
+          "totalKobo",
+          "count",
+          "byCategory"
+        ]
+      },
+      "ProfitReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "revenueKobo": {
+            "type": "number"
+          },
+          "cogsKobo": {
+            "type": "number"
+          },
+          "grossProfitKobo": {
+            "type": "number"
+          },
+          "operatingExpensesKobo": {
+            "type": "number"
+          },
+          "stockAdjustmentsKobo": {
+            "type": "number"
+          },
+          "netOperatingProfitKobo": {
+            "type": "number"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "range",
+          "revenueKobo",
+          "cogsKobo",
+          "grossProfitKobo",
+          "operatingExpensesKobo",
+          "stockAdjustmentsKobo",
+          "netOperatingProfitKobo",
+          "note"
+        ]
+      },
+      "InventoryReport": {
+        "type": "object",
+        "properties": {
+          "totalValueKobo": {
+            "type": "number"
+          },
+          "asOf": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "sku": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "baseUnit": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "string"
+                },
+                "reorderThreshold": {
+                  "type": "string"
+                },
+                "isLowStock": {
+                  "type": "boolean"
+                },
+                "avgCostKobo": {
+                  "type": "string"
+                },
+                "valueKobo": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "productId",
+                "name",
+                "sku",
+                "baseUnit",
+                "quantity",
+                "reorderThreshold",
+                "isLowStock"
+              ]
+            }
+          },
+          "lowStockCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "asOf",
+          "items",
+          "lowStockCount"
+        ]
+      },
+      "ProductPerformanceReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "unitsSold": {
+                  "type": "string"
+                },
+                "salesKobo": {
+                  "type": "number"
+                },
+                "cogsKobo": {
+                  "type": "number"
+                },
+                "grossProfitKobo": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "productId",
+                "name",
+                "unitsSold",
+                "salesKobo"
+              ]
+            }
+          }
+        },
+        "required": [
+          "range",
+          "items"
+        ]
+      },
+      "StaffReport": {
+        "type": "object",
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/RangeInfo"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "salesCount": {
+                  "type": "number"
+                },
+                "salesKobo": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "userId",
+                "name",
+                "phone",
+                "salesCount",
+                "salesKobo"
+              ]
+            }
+          }
+        },
+        "required": [
+          "range",
+          "items"
+        ]
+      },
+      "SyncOperationInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Client generated operation id. Also the idempotency key, so retries are safe."
+          },
+          "type": {
+            "enum": [
+              "customer.create",
+              "sale.create",
+              "repayment.create",
+              "expense.create"
+            ],
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Same body the matching REST endpoint accepts. For repayment.create also send receivableId or customerId."
+          },
+          "clientCreatedAt": {
+            "type": "string",
+            "description": "When the user made it on the device."
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "payload",
+          "clientCreatedAt"
+        ]
+      },
+      "SyncBatchDto": {
+        "type": "object",
+        "properties": {
+          "deviceId": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "operations": {
+            "minItems": 1,
+            "maxItems": 50,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SyncOperationInput"
+            }
+          }
+        },
+        "required": [
+          "operations"
+        ]
+      },
+      "SyncOperationResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "SYNCED",
+              "CONFLICT",
+              "FAILED_RETRYABLE",
+              "FAILED_FINAL",
+              "DISMISSED"
+            ],
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          },
+          "result": {
+            "type": "object",
+            "description": "The canonical record the server created, for SYNCED operations."
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "status"
+        ]
+      },
+      "SyncBatchResult": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SyncOperationResult"
+            }
+          },
+          "serverTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "results",
+          "serverTime"
+        ]
+      },
+      "SyncStatusDto": {
+        "type": "object",
+        "properties": {
+          "counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "unresolved": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "errorCode": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "message": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "details": {
+                  "type": "object"
+                },
+                "payload": {
+                  "type": "object"
+                },
+                "clientCreatedAt": {
+                  "type": "string"
+                },
+                "receivedAt": {
+                  "type": "string"
+                },
+                "attempts": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "status",
+                "errorCode",
+                "message",
+                "details",
+                "payload",
+                "clientCreatedAt",
+                "receivedAt",
+                "attempts"
+              ]
+            }
+          },
+          "serverTime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "counts",
+          "unresolved",
+          "serverTime"
+        ]
+      },
+      "ResolveOperationDto": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "enum": [
+              "EDIT_AND_POST",
+              "DISMISS"
+            ],
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The corrected body, for EDIT_AND_POST."
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300,
+            "description": "Why. Kept in the audit trail. Dismissing means the local transaction is never recorded."
+          }
+        },
+        "required": [
+          "action",
+          "reason"
+        ]
+      }
+    }
+  }
+}
